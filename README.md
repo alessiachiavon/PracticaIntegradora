@@ -11,7 +11,25 @@ PRUEBA FUNCIONAMIENTO GET | POST | PUT | DELETE
 <span></span><span>Captura de pantalla Postman para GET:</span><span></span>
 <span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Products_GetVSC.jpg</span><span></span>
 
-<span></span><span>Captura de pantalla Mongo Atlas para GET:</span><span></span>
+   b. POST
+<span></span><span>Captura de pantalla Postman para POST:</span><span></span>
+<span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Products_PostVSC.jpg</span><span></span>
+
+<span></span><span>Captura de pantalla Mongo Atlas para POST:</span><span></span>
 <span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Users_02.jpg</span><span></span>
+
+   c. PUT
+<span></span><span>Captura de pantalla Postman para PUT:</span><span></span>
+<span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Products_PutVSC.jpg</span><span></span>
+
+<span></span><span>Captura de pantalla Mongo Atlas para PUT:</span><span></span>
+<span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Users_03.jpg</span><span></span>
+
+   d. DELETE
+<span></span><span>Captura de pantalla Postman para DELETE:</span><span></span>
+<span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Products_DeleteVSC.jpg</span><span></span>
+
+<span></span><span>Captura de pantalla Mongo Atlas para DELETE:</span><span></span>
+<span></span><span>https://raw.githubusercontent.com/alessiachiavon/PracticaIntegradora/master/assets/Users_04.jpg</span><span></span>
    
    

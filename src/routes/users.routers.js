@@ -12,15 +12,17 @@ router.get("/", async(req, res) => {
     }
 })
 
-router.post("/", async(req,res)=>{
-    let {nombre, email} = req.body
+router.post("/", async (req, res) => {
+    console.log(req.body)
+    let { nombre, email } = req.body
 
-    if(!nombre || !email){
+    if (!nombre || !email) {
         res.send({ status: "error", error: "Faltan parámetros" })
     }
-
-    let result = await userModel.create({ nombre, email})
+    else {
+    let result = await userModel.create({ nombre, email })
     res.send({ result: "success", payload: result })
+    }
 })
 
 router.put("/:uid", async (req, res) => {
@@ -30,9 +32,10 @@ router.put("/:uid", async (req, res) => {
     if (!userToReplace.nombre || !userToReplace.email) {
         res.send({ status: "error", error: "Faltan parámetros"})
     }
-
+    else{
     let result = await userModel.updateOne({ _id: uid }, userToReplace)
     res.send({ result: "success", payload: result})
+    }
 })
 
 router.delete("/:uid", async(req,res)=>{

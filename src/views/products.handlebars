@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Productos</title>
+</head>
+
+<body>
+    
+    <a href="/api/carts/64fe3a46a1671a46ffada6ce"><button>Mi carrito</button></a>
+    
+    
+    <h1>Productos</h1>
+    <ul>
+        {{#each docs}}
+        <li>{{this.nombre}}. ${{this.precio}}</li>
+        <button class="add-to-cart" data-product-id={{this.id}}>Agregar al Carrito</button>
+        {{/each}}
+    </ul>
+    <p>Página actual: {{page}} / {{totalPages}}</p>
+    {{#if hasPrevPage}}
+    <a href=prevLink>Anterior</a>
+    {{/if}}
+    {{#if hasNextPage}} <a href=nextLink>Siguiente</a>
+        {{/if}}
+
+        <script>
+            
+            const raw = ""
+            const buttons = document.querySelectorAll(".add-to-cart");
+
+        buttons.forEach(button => {
+            button.addEventListener("click", async () => {
+                const productId = button.getAttribute('data-product-id');
+            
+
+ const requestOptions = {
+  method: 'PUT',
+  body: raw,
+  redirect: 'follow'
+};
+
+ try {
+    const response = await fetch(`http://localhost:8080/api/carts/64fe3a46a1671a46ffada6ce/products/${productId}`, requestOptions);
+    const data = await response.json(); // Parsea la respuesta JSON
+  
+    if (data.result === 'success') {
+      cid = data.payload._id; // Accede al ID del carrito desde el objeto data
+      console.log(`Agregado al carrito: Producto ID ${productId}`);
+    } else {
+      console.log('La respuesta indica un error:', data.result);
+    }
+  } catch (error) {
+    console.log('Ocurrió un error al realizar la solicitud:', error);
+  }
+
+
+        });
+        });
+        </script>
+</body>
+
+</html>

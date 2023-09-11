@@ -1,17 +1,30 @@
 const { Router } = require("express")
-const { productModel } = require("../models/product.model")
+const productModel = require("../models/product.model")
 
 const router = Router()
 
+// traer
 router.get("/", async(req, res) => {
-    try {
-        let products = await productModel.find()
-        res.send({ result: "success", payload: products})
-    } catch (error) {
-        console.log(error)
-    }
+    let result
+    let limit = parseInt(req.query.limit);
+    if (!limit) limit = 10;
+    let page = parseInt(req.query.page);
+    if (!page) page = 1;
+    let query = req.query.query;
+    let sort = req.query.sort;
+    if (!query) { result = await productModel.paginate({}, { page, limit: limit, sort:{precio: sort}, lean: true })}
+    else { result = await productModel.paginate({categoria: query}, { page, limit: limit, lean: true })};
+    
+    
+    result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/products?page=${result.prevPage}` : '';
+    result.nextLink = result.hasNextPage ? `http://localhost:8080/api/products?page=${result.nextPage}` : '';
+    result.isValid = !(page <= 0 || page > result.totalPages)
+    console.log(result)
+    res.render('products', result)
+    //res.send(status="success", payload=result)
 })
 
+// crear
 router.post("/", async(req,res)=>{
     let {nombre, categoria, imagen, precio, stock} = req.body
 
@@ -23,21 +36,23 @@ router.post("/", async(req,res)=>{
     res.send({ result: "success", payload: result })
 })
 
-router.put("/:uid", async (req, res) => {
-    let { uid } = req.params
+// reemplazar
+router.put("/:pid", async (req, res) => {
+    let { pid } = req.params
 
-    let userToReplace = req.body
-    if (!userToReplace.nombre || !userToReplace.categoria || !userToReplace.imagen || !userToReplace.precio || !userToReplace.stock) {
+    let productToReplace = req.body
+    if (!productToReplace.nombre || !productToReplace.categoria || !productToReplace.imagen || !productToReplace.precio || !productToReplace.stock) {
         res.send({ status: "error", error: "Faltan parámetros"})
     }
 
-    let result = await productModel.updateOne({ _id: uid }, userToReplace)
+    let result = await productModel.updateOne({ _id: pid }, productToReplace)
     res.send({ result: "success", payload: result})
 })
 
-router.delete("/:uid", async(req,res)=>{
-    let { uid } = req.params
-    let result = await productModel.deleteOne({ _id: uid })
+// borrar
+router.delete("/:pid", async(req,res)=>{
+    let { pid } = req.params
+    let result = await productModel.deleteOne({ _id: pid })
     res.send({ result: "success", payload: result})
 })
 

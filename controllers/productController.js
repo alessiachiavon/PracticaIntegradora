@@ -1,10 +1,6 @@
-const { Router } = require("express")
-const productModel = require("../models/product.model")
+const productData = require('../persistence/productData');
 
-const router = Router()
-
-// traer
-router.get("/", async(req, res) => {
+async function getProduct(req, res) {
     let result
     let limit = parseInt(req.query.limit);
     if (!limit) limit = 10;
@@ -12,32 +8,28 @@ router.get("/", async(req, res) => {
     if (!page) page = 1;
     let query = req.query.query;
     let sort = req.query.sort;
-    if (!query) { result = await productModel.paginate({}, { page, limit: limit, sort:{precio: sort}, lean: true })}
-    else { result = await productModel.paginate({categoria: query}, { page, limit: limit, lean: true })};
-    
+    if (!query) { result = await productData.getProduct(page, limit, sort)}
+    else { result = await productData.queryProduct(page, limit, query)};
     
     result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/products?page=${result.prevPage}` : '';
     result.nextLink = result.hasNextPage ? `http://localhost:8080/api/products?page=${result.nextPage}` : '';
     result.isValid = !(page <= 0 || page > result.totalPages)
     console.log(result)
     res.render('products', result)
-    //res.send(status="success", payload=result)
-})
+}
 
-// crear
-router.post("/", async(req,res)=>{
+function createProduct(req,res) {
     let {nombre, categoria, imagen, precio, stock} = req.body
 
     if(!nombre || !categoria || !imagen || !precio || !stock){
         res.send({ status: "error", error: "Faltan parámetros" })
     }
 
-    let result = await productModel.create({ nombre, categoria, imagen, precio, stock})
-    res.send({ result: "success", payload: result })
-})
+    let product = productData.createProduct({ nombre, categoria, imagen, precio, stock})
+    res.send({ result: "success", payload: product })
+}
 
-// reemplazar
-router.put("/:pid", async (req, res) => {
+function replaceProduct (req, res) {
     let { pid } = req.params
 
     let productToReplace = req.body
@@ -45,15 +37,19 @@ router.put("/:pid", async (req, res) => {
         res.send({ status: "error", error: "Faltan parámetros"})
     }
 
-    let result = await productModel.updateOne({ _id: pid }, productToReplace)
-    res.send({ result: "success", payload: result})
-})
+    let product = productData.updateProduct(pid, productToReplace)
+    res.send({ result: "success", payload: product})
+}
 
-// borrar
-router.delete("/:pid", async(req,res)=>{
+function deleteProduct (req,res) {
     let { pid } = req.params
-    let result = await productModel.deleteOne({ _id: pid })
+    let result = productData.deleteProduct(pid)
     res.send({ result: "success", payload: result})
-})
+}
 
-module.exports = router
+module.exports = {
+    getProduct,
+    createProduct,
+    replaceProduct,
+    deleteProduct
+}

@@ -1,5 +1,4 @@
 const cartData = require('../persistence/cartData');
-const { createProduct } = require('./productController');
 
 function createCart(req,res) {
     const newCart = cartData.createCart();
@@ -7,7 +6,7 @@ function createCart(req,res) {
 }
 
 async function getCart(req, res) {
-    
+
     const cid = req.params.cid
     let cart = await cartData.getCart("64fe3a46a1671a46ffada6ce")
     console.log(cart)

@@ -1,4 +1,4 @@
-const cartData = require('../persistence/cartData');
+const cartData = require('../dao/models/cart.model');
 
 function createCart(req,res) {
     const newCart = cartData.createCart();

@@ -1,4 +1,4 @@
-const productData = require('../persistence/productData');
+const productData = require('../dao/models/product.model');
 
 async function getProduct(req, res) {
     let result

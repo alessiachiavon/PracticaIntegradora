@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+import cors from "cors"
 const cartsRouter = require("./routes/carts.routers")
 const productRouter = require("./routes/products.routers")
 const handlebars = require('express-handlebars')
@@ -8,6 +9,7 @@ const PORT = 8080
 //let cid
 
 app.use(express.json())
+app.use(cors());
 
 app.use("/api/carts", cartsRouter)
 app.use("/api/products", productRouter)

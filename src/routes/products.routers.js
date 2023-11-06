@@ -1,5 +1,10 @@
 const { Router } = require("express")
 const productModel = require("../models/product.model")
+const CustomError = require('../services/CustomError.js')
+const EErrors = require('../services/enum.js')
+const generateProductErrorInfo = require('../services/info.js')
+
+const products = []
 
 const router = Router()
 
@@ -26,10 +31,19 @@ router.get("/", async(req, res) => {
 
 // crear
 router.post("/", async(req,res)=>{
-    let {nombre, categoria, imagen, precio, stock} = req.body
+    const nombre = req.body.productTitle
+    const categoria = req.body.productCategory
+    const imagen = req.body.productImage
+    const precio = req.body.productPrice
+    const stock = req.body.productStock
 
     if(!nombre || !categoria || !imagen || !precio || !stock){
-        res.send({ status: "error", error: "Faltan parámetros" })
+        CustomError.createError({ 
+            name:"Product creation error",
+            cause:generateProductErrorInfo({nombre,categoria,imagen,precio,stock}),
+            message:"Error Trying to create Product",
+            code:EErrors.INVALID_TYPES_ERROR 
+        })
     }
 
     let result = await productModel.create({ nombre, categoria, imagen, precio, stock})

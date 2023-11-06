@@ -31,11 +31,12 @@ router.get("/", async(req, res) => {
 
 // crear
 router.post("/", async(req,res)=>{
-    const nombre = req.body.productTitle
-    const categoria = req.body.productCategory
-    const imagen = req.body.productImage
-    const precio = req.body.productPrice
-    const stock = req.body.productStock
+    let nombre = req.body.nombre
+    let categoria = req.body.categoria
+    let imagen = req.body.imagen
+    let precio = req.body.precio
+    let stock = req.body.stock
+    console.log(nombre, categoria, imagen, precio, stock)
 
     if(!nombre || !categoria || !imagen || !precio || !stock){
         CustomError.createError({ 
@@ -46,8 +47,15 @@ router.post("/", async(req,res)=>{
         })
     }
 
-    let result = await productModel.create({ nombre, categoria, imagen, precio, stock})
-    res.send({ result: "success", payload: result })
+    try {
+        // Intenta crear el producto si todos los campos están presentes
+        const result = await productModel.create({ nombre, categoria, imagen, precio, stock });
+        res.json({ result: "success", payload: result });
+    } catch (error) {
+        // Manejar otros errores, como problemas de base de datos
+        console.error(error);
+        res.status(500).json({ status: "error", error: "Error interno del servidor" });
+    }
 })
 
 // reemplazar

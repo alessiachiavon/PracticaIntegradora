@@ -1,7 +1,7 @@
 //64fe3a46a1671a46ffada6ce
 
-const { Router } = require("express")
-const cartModel = require("../models/cart.model")
+const {Router} = require("express")
+const {cartModel} = require("../models/cart.model")
 
 const router = Router()
 
